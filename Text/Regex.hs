@@ -18,7 +18,7 @@
 -- Modified by Chris Kuklewicz to be a thin layer over the regex-posix
 -- package, and moved into a regex-compat package.
 --
-module Text.Regex.New (
+module Text.Regex (
     -- * Regular expressions
     Regex,
     mkRegex,
