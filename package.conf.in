@@ -14,7 +14,7 @@ hs-libraries:   "HSregex-compat"
 extra-libraries:
 include-dirs:
 includes:		
-depends:	 base regex-base
+depends:	 base regex-base regex-posix
 hugs-options:
 cc-options:
 ld-options:
