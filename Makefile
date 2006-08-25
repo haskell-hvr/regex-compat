@@ -5,7 +5,7 @@ ALL_DIRS = Text
 
 PACKAGE 	= regex-compat
 VERSION 	= 0.71
-PACKAGE_DEPS 	= base regex-base
+PACKAGE_DEPS 	= base regex-base regex-posix
 
 EXCLUDED_SRCS	= Setup.hs
 
