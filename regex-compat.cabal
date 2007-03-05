@@ -1,8 +1,5 @@
--- ****************************************************************
--- To fix for cabal < 1.1.4 comment out the Extra-Source-Files line
--- ****************************************************************
 Name:                   regex-compat
-Version:                0.71
+Version:                0.90
 -- Cabal-Version:       >=1.1.4
 License:                BSD3
 License-File:           LICENSE
@@ -11,21 +8,20 @@ Author:                 Christopher Kuklewicz
 Maintainer:             TextRegexLazy@personal.mightyreason.com
 Stability:              Seems to work, passes a few tests
 Homepage:               http://sourceforge.net/projects/lazy-regex
--- Package-URL:
+Package-URL:            http://darcs.haskell.org/packages/regex-unstable/regex-compat/
 Synopsis:               Replaces/Enhances Text.Regex
 Description:            One module layer over regex-posix to replace Text.Regex
 Category:               Text
 Tested-With:            GHC
-Build-Depends:          regex-base, regex-posix, base
+Build-Depends:          regex-base >= 0.80 , regex-posix, base >= 2.0
 -- Data-Files:
--- Extra-Source-Files:     Text/Regex/Lazy/TestCompat.hs, Text/Regex/Lazy/TestFull.hs, Text/Regex/Impl/TestContext.hs, TestTextRegexLazy.hs, Example.hs, Example2.hs, lazy.html, README, Makefile
+-- Extra-Source-Files:
 -- Extra-Tmp-Files:
 Exposed-Modules:        Text.Regex
 Buildable:              True
 -- Other-Modules:
--- ********* Be backward compatible until 6.4.2 is futher deployed
 -- HS-Source-Dirs:         "."
--- Extensions:
+Extensions:             MultiParamTypeClasses, FunctionalDependencies
 GHC-Options:            -Wall -Werror -O2
 -- GHC-Options:            -Wall -Werror
 -- GHC-Options:            -Wall -ddump-minimal-imports
