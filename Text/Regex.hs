@@ -31,7 +31,8 @@ module Text.Regex (
 
 import Data.Bits((.|.))
 import Text.Regex.Base(RegexMaker(makeRegexOpts),defaultExecOpt,RegexContext(matchM))
-import Text.Regex.Posix(Regex,compNewline,compIgnoreCase,compExtended)
+--import Text.Regex.Posix(Regex,compNewline,compIgnoreCase,compExtended)
+import Text.Regex.PCRE(Regex,compMultiline,compCaseless)
 
 -- | Makes a regular expression with the default options (multi-line,
 -- case-sensitive).  The syntax of regular expressions is
@@ -39,7 +40,7 @@ import Text.Regex.Posix(Regex,compNewline,compIgnoreCase,compExtended)
 -- expressions).
 mkRegex :: String -> Regex
 mkRegex s = makeRegexOpts opt defaultExecOpt s
-  where opt = compExtended .|. compNewline
+  where opt = compMultiline
 
 -- | Makes a regular expression, where the multi-line and
 -- case-sensitive options can be changed from the default settings.
@@ -52,9 +53,9 @@ mkRegexWithOpts
    -> Regex   -- ^ Returns: the compiled regular expression
 
 mkRegexWithOpts s single_line case_sensitive
-  = let opt = (if single_line then (compNewline .|.) else id) .
-              (if case_sensitive then id else (compIgnoreCase .|.)) $
-              compExtended
+  = let opt = (if single_line then id else (compMultiline .|.)) .
+              (if case_sensitive then id else (compCaseless .|.)) $
+              compBlank
     in makeRegexOpts opt defaultExecOpt s
 
 -- | Match a regular expression against a string

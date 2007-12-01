@@ -13,7 +13,7 @@ Synopsis:               Replaces/Enhances Text.Regex
 Description:            One module layer over regex-posix to replace Text.Regex
 Category:               Text
 Tested-With:            GHC
-Build-Depends:          regex-base >= 0.90 , regex-posix >= 0.90, base >= 2.0
+Build-Depends:          regex-base >= 0.90 , regex-pcre >= 0.90, base >= 2.0
 -- Data-Files:
 -- Extra-Source-Files:
 -- Extra-Tmp-Files:
@@ -22,8 +22,8 @@ Buildable:              True
 -- Other-Modules:
 -- HS-Source-Dirs:         "."
 Extensions:             MultiParamTypeClasses, FunctionalDependencies
-GHC-Options:            -Wall -Werror -O2
--- GHC-Options:            -Wall -Werror
+GHC-Options:            -Wall -O2
+-- GHC-Options:            -Wall -Werror -O2
 -- GHC-Options:            -Wall -ddump-minimal-imports
 -- GHC-Prog-Options: 
 -- Hugs-Options:
