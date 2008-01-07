@@ -122,7 +122,7 @@ subRegex regexp inp repl =
 {- | Splits a string based on a regular expression.  The regular expression
 should identify one delimiter.
 
-This does not advance and produces an infinite list of "" if the regex
+This does not advance and produces an infinite list of [] if the regex
 matches an empty string.  This misfeature is here to match the
 behavior of the the original Text.Regex API.
 -}
