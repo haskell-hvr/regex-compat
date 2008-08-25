@@ -29,8 +29,9 @@ module Text.Regex (
     splitRegex
   ) where
 
+import Data.Array((!))
 import Data.Bits((.|.))
-import Text.Regex.Base(RegexMaker(makeRegexOpts),defaultExecOpt,RegexLike(matchOnceText),RegexContext(matchM))
+import Text.Regex.Base(RegexMaker(makeRegexOpts),defaultExecOpt,RegexLike(matchOnceText,matchAll,matchAllText),RegexContext(matchM),MatchText)
 import Text.Regex.Posix(Regex,compNewline,compIgnoreCase,compExtended)
 
 -- | Makes a regular expression with the default options (multi-line,
@@ -91,6 +92,70 @@ This does not advance if the regex matches an empty string.  This
 misfeature is here to match the behavior of the the original
 Text.Regex API.
 -}
+
+subRegex :: Regex                          -- ^ Search pattern
+         -> String                         -- ^ Input string
+         -> String                         -- ^ Replacement text
+         -> String                         -- ^ Output string
+subRegex _ "" _ = ""
+subRegex regexp inp repl =
+  let compile i str [] = \ _m ->  (str++)
+      compile i str (("\\",(off,len)):rest) =
+        let i' = off+len
+            pre = take (off-i) str
+            str' = drop (i'-i) str
+        in if null str' then \ _m -> (pre ++) . ('\\':)
+             else \  m -> (pre ++) . ('\\' :) . compile i' str' rest m
+      compile i str ((xstr,(off,len)):rest) =
+        let i' = off+len
+            pre = take (off-i) str
+            str' = drop (i'-i) str
+            x = read xstr
+        in if null str' then \ m -> (pre++) . ((fst (m!x))++)
+             else \ m -> (pre++) . ((fst (m!x))++) . compile i' str' rest m
+      compiled :: MatchText String -> String -> String
+      compiled = compile 0 repl findrefs where
+        -- bre matches a backslash then capture either a backslash or some digits
+        bre = mkRegex "\\\\(\\\\|[0-9]+)"
+        findrefs = map (\m -> (fst (m!1),snd (m!0))) (matchAllText bre repl)
+      go i str [] = str
+      go i str (m:ms) =
+        let (_,(off,len)) = m!0
+            i' = off+len
+            pre = take (off-i) str
+            str' = drop (i'-i) str
+        in if null str' then pre ++ (compiled m "")
+             else pre ++ (compiled m (go i' str' ms))
+  in go 0 inp (matchAllText regexp inp)
+
+{- | Splits a string based on a regular expression.  The regular expression
+should identify one delimiter.
+
+This does not advance and produces an infinite list of [] if the regex
+matches an empty string.  This misfeature is here to match the
+behavior of the the original Text.Regex API.
+-}
+
+splitRegex :: Regex -> String -> [String]
+splitRegex _ [] = []
+splitRegex delim strIn = 
+  let matches = map (!0) (matchAll delim strIn)
+      go i str [] = str : []
+      go i str ((off,len):rest) =
+        let i' = off+len
+            firstline = take (off-i) str
+            remainder = drop (i'-i) str
+        in seq i' $
+           if null remainder then [firstline,""]
+             else firstline : go i' remainder rest
+  in go 0 strIn matches
+
+{-
+
+-- These are the older versions which failed on (correct answer:)
+-- let r = mkRegex "^(.)" in subRegex2 r "abc\ndef" "|\\1"
+-- "|abc\n|def"
+
 subRegex :: Regex                          -- ^ Search pattern
       -> String                         -- ^ Input string
       -> String                         -- ^ Replacement text
@@ -119,14 +184,6 @@ subRegex regexp inp repl =
        Just (lead, match, trail, groups) ->
          lead ++ lookup match repl groups ++ (subRegex regexp trail repl)
 
-{- | Splits a string based on a regular expression.  The regular expression
-should identify one delimiter.
-
-This does not advance and produces an infinite list of [] if the regex
-matches an empty string.  This misfeature is here to match the
-behavior of the the original Text.Regex API.
--}
-
 splitRegex :: Regex -> String -> [String]
 splitRegex _ [] = []
 splitRegex delim strIn = loop strIn where
@@ -136,3 +193,5 @@ splitRegex delim strIn = loop strIn where
                   if null remainder
                     then [firstline,""]
                     else firstline : loop remainder
+
+-}
