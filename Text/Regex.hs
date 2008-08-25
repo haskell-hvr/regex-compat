@@ -31,7 +31,7 @@ module Text.Regex (
 
 import Data.Array((!))
 import Data.Bits((.|.))
-import Text.Regex.Base(RegexMaker(makeRegexOpts),defaultExecOpt,RegexLike(matchOnceText,matchAll,matchAllText),RegexContext(matchM),MatchText)
+import Text.Regex.Base(RegexMaker(makeRegexOpts),defaultExecOpt,RegexLike(matchAll,matchAllText),RegexContext(matchM),MatchText)
 import Text.Regex.Posix(Regex,compNewline,compIgnoreCase,compExtended)
 
 -- | Makes a regular expression with the default options (multi-line,
@@ -99,7 +99,7 @@ subRegex :: Regex                          -- ^ Search pattern
          -> String                         -- ^ Output string
 subRegex _ "" _ = ""
 subRegex regexp inp repl =
-  let compile i str [] = \ _m ->  (str++)
+  let compile _i str [] = \ _m ->  (str++)
       compile i str (("\\",(off,len)):rest) =
         let i' = off+len
             pre = take (off-i) str
@@ -118,7 +118,7 @@ subRegex regexp inp repl =
         -- bre matches a backslash then capture either a backslash or some digits
         bre = mkRegex "\\\\(\\\\|[0-9]+)"
         findrefs = map (\m -> (fst (m!1),snd (m!0))) (matchAllText bre repl)
-      go i str [] = str
+      go _i str [] = str
       go i str (m:ms) =
         let (_,(off,len)) = m!0
             i' = off+len
@@ -140,7 +140,7 @@ splitRegex :: Regex -> String -> [String]
 splitRegex _ [] = []
 splitRegex delim strIn = 
   let matches = map (!0) (matchAll delim strIn)
-      go i str [] = str : []
+      go _i str [] = str : []
       go i str ((off,len):rest) =
         let i' = off+len
             firstline = take (off-i) str
