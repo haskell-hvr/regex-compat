@@ -4,7 +4,7 @@
 -- Module      :  Text.Regex
 -- Copyright   :  (c) Chris Kuklewicz 2006, derived from (c) The University of Glasgow 2001
 -- License     :  BSD-style (see the file LICENSE)
--- 
+--
 -- Maintainer  :  libraries@haskell.org
 -- Stability   :  experimental
 -- Portability :  non-portable (regex-base needs MPTC+FD)
@@ -46,9 +46,9 @@ mkRegex s = makeRegexOpts opt defaultExecOpt s
 -- case-sensitive options can be changed from the default settings.
 mkRegexWithOpts
    :: String  -- ^ The regular expression to compile
-   -> Bool    -- ^ 'True' @\<=>@ @\'^\'@ and @\'$\'@ match the beginning and 
-	      -- end of individual lines respectively, and @\'.\'@ does /not/
-	      -- match the newline character.
+   -> Bool    -- ^ 'True' @\<=>@ @\'^\'@ and @\'$\'@ match the beginning and
+              -- end of individual lines respectively, and @\'.\'@ does /not/
+              -- match the newline character.
    -> Bool    -- ^ 'True' @\<=>@ matching is case-sensitive
    -> Regex   -- ^ Returns: the compiled regular expression
 
@@ -60,25 +60,25 @@ mkRegexWithOpts s single_line case_sensitive
 
 -- | Match a regular expression against a string
 matchRegex
-   :: Regex	-- ^ The regular expression
-   -> String	-- ^ The string to match against
-   -> Maybe [String]	-- ^ Returns: @'Just' strs@ if the match succeeded
-			-- (and @strs@ is the list of subexpression matches),
-			-- or 'Nothing' otherwise.
+   :: Regex     -- ^ The regular expression
+   -> String    -- ^ The string to match against
+   -> Maybe [String]    -- ^ Returns: @'Just' strs@ if the match succeeded
+                        -- (and @strs@ is the list of subexpression matches),
+                        -- or 'Nothing' otherwise.
 matchRegex p str = fmap (\(_,_,_,str) -> str) (matchRegexAll p str)
 
 -- | Match a regular expression against a string, returning more information
 -- about the match.
 matchRegexAll
-   :: Regex	-- ^ The regular expression
-   -> String	-- ^ The string to match against
+   :: Regex     -- ^ The regular expression
+   -> String    -- ^ The string to match against
    -> Maybe ( String, String, String, [String] )
-		-- ^ Returns: 'Nothing' if the match failed, or:
-		-- 
-		-- >  Just ( everything before match,
-		-- >         portion matched,
-		-- >         everything after the match,
-		-- >         subexpression matches )
+                -- ^ Returns: 'Nothing' if the match failed, or:
+                --
+                -- >  Just ( everything before match,
+                -- >         portion matched,
+                -- >         everything after the match,
+                -- >         subexpression matches )
 
 matchRegexAll p str = matchM p str
 
@@ -138,7 +138,7 @@ behavior of the the original Text.Regex API.
 
 splitRegex :: Regex -> String -> [String]
 splitRegex _ [] = []
-splitRegex delim strIn = 
+splitRegex delim strIn =
   let matches = map (!0) (matchAll delim strIn)
       go _i str [] = str : []
       go i str ((off,len):rest) =
