@@ -5,7 +5,7 @@
 -- Copyright   :  (c) Chris Kuklewicz 2006, derived from (c) The University of Glasgow 2001
 -- License     :  BSD-style (see the file LICENSE)
 --
--- Maintainer  :  libraries@haskell.org
+-- Maintainer  :  hvr@gnu.org
 -- Stability   :  experimental
 -- Portability :  non-portable (regex-base needs MPTC+FD)
 --
