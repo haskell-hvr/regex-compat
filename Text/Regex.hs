@@ -139,7 +139,7 @@ behavior of the the original Text.Regex API.
 splitRegex :: Regex -> String -> [String]
 splitRegex _ [] = []
 splitRegex delim strIn =
-  let matches = map (!0) (matchAll delim strIn)
+  let matches = map (! 0) (matchAll delim strIn)
       go _i str [] = str : []
       go i str ((off,len):rest) =
         let i' = off+len
