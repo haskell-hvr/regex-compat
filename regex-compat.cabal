@@ -1,13 +1,15 @@
 cabal-version:          1.12
 name:                   regex-compat
-version:                0.95.2.0
+version:                0.95.2.1
 
-build-type:		Simple
+build-type:             Simple
 license:                BSD3
 license-file:           LICENSE
 copyright:              Copyright (c) 2006, Christopher Kuklewicz
 author:                 Christopher Kuklewicz
 maintainer:             hvr@gnu.org
+homepage:               https://wiki.haskell.org/Regular_expressions
+bug-reports:            https://github.com/haskell-hvr/regex-compat/issues
 synopsis:               Replaces/Enhances "Text.Regex"
 category:               Text
 description:
@@ -15,10 +17,37 @@ description:
   .
   See also <https://wiki.haskell.org/Regular_expressions> for more information.
 
+tested-with:
+  -- Haskell CI:
+  GHC == 7.0.4
+  GHC == 7.2.2
+  GHC == 7.4.2
+  GHC == 7.6.3
+  GHC == 7.8.4
+  GHC == 7.10.3
+  GHC == 8.0.2
+  GHC == 8.2.2
+  GHC == 8.4.4
+  GHC == 8.6.5
+  GHC == 8.8.4
+  GHC == 8.10.3
+  -- manually (AA, 2021-02-17):
+  GHC == 8.10.4
+  GHC == 9.0.1
+
+source-repository head
+  type:     git
+  location: https://github.com/haskell-hvr/regex-compat.git
+
+source-repository this
+  type:     git
+  location: https://github.com/haskell-hvr/regex-compat.git
+  tag:      v0.95.2.1
+
 library
   exposed-modules: Text.Regex
 
-  build-depends: base        >= 4.3 && < 4.15
+  build-depends: base        >= 4.3 && < 4.16
                , regex-base  == 0.94.*
                , regex-posix == 0.96.*
                , array       >= 0.3 && < 0.6
@@ -29,4 +58,4 @@ library
   if impl(ghc >= 7.2)
     default-extensions: Trustworthy
 
-  ghc-options:            -Wall -O2
+  ghc-options:            -Wall
