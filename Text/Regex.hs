@@ -111,16 +111,16 @@ subRegex regexp inp repl =
             pre = take (off-i) str
             str' = drop (i'-i) str
             x = read xstr
-        in if null str' then \ m -> (pre++) . ((fst (m!x))++)
-             else \ m -> (pre++) . ((fst (m!x))++) . compile i' str' rest m
+        in if null str' then \ m -> (pre ++) . (fst (m ! x) ++)
+             else \ m -> (pre ++) . (fst (m ! x) ++) . compile i' str' rest m
       compiled :: MatchText String -> String -> String
       compiled = compile 0 repl findrefs where
         -- bre matches a backslash then capture either a backslash or some digits
         bre = mkRegex "\\\\(\\\\|[0-9]+)"
-        findrefs = map (\m -> (fst (m!1),snd (m!0))) (matchAllText bre repl)
+        findrefs = map (\m -> (fst (m ! 1), snd (m ! 0))) (matchAllText bre repl)
       go _i str [] = str
       go i str (m:ms) =
-        let (_,(off,len)) = m!0
+        let (_, (off, len)) = m ! 0
             i' = off+len
             pre = take (off-i) str
             str' = drop (i'-i) str
