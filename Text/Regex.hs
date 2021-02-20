@@ -45,12 +45,12 @@ mkRegex s = makeRegexOpts opt defaultExecOpt s
 -- | Makes a regular expression, where the multi-line and
 -- case-sensitive options can be changed from the default settings.
 mkRegexWithOpts
-   :: String  -- ^ The regular expression to compile
-   -> Bool    -- ^ 'True' @\<=>@ @\'^\'@ and @\'$\'@ match the beginning and
+   :: String  -- ^ The regular expression to compile.
+   -> Bool    -- ^ 'True' iff @\'^\'@ and @\'$\'@ match the beginning and
               -- end of individual lines respectively, and @\'.\'@ does /not/
               -- match the newline character.
-   -> Bool    -- ^ 'True' @\<=>@ matching is case-sensitive
-   -> Regex   -- ^ Returns: the compiled regular expression
+   -> Bool    -- ^ 'True' iff matching is case-sensitive.
+   -> Regex   -- ^ Returns: the compiled regular expression.
 
 mkRegexWithOpts s single_line case_sensitive
   = let opt = (if single_line then (compNewline .|.) else id) .
@@ -58,10 +58,10 @@ mkRegexWithOpts s single_line case_sensitive
               compExtended
     in makeRegexOpts opt defaultExecOpt s
 
--- | Match a regular expression against a string
+-- | Match a regular expression against a string.
 matchRegex
-   :: Regex     -- ^ The regular expression
-   -> String    -- ^ The string to match against
+   :: Regex     -- ^ The regular expression.
+   -> String    -- ^ The string to match against.
    -> Maybe [String]    -- ^ Returns: @'Just' strs@ if the match succeeded
                         -- (and @strs@ is the list of subexpression matches),
                         -- or 'Nothing' otherwise.
@@ -70,8 +70,8 @@ matchRegex p str = fmap (\(_,_,_,str) -> str) (matchRegexAll p str)
 -- | Match a regular expression against a string, returning more information
 -- about the match.
 matchRegexAll
-   :: Regex     -- ^ The regular expression
-   -> String    -- ^ The string to match against
+   :: Regex     -- ^ The regular expression.
+   -> String    -- ^ The string to match against.
    -> Maybe ( String, String, String, [String] )
                 -- ^ Returns: 'Nothing' if the match failed, or:
                 --
@@ -82,15 +82,15 @@ matchRegexAll
 
 matchRegexAll p str = matchM p str
 
-{- | Replaces every occurance of the given regexp with the replacement string.
+{- | Replaces every occurrence of the given regexp with the replacement string.
 
 In the replacement string, @\"\\1\"@ refers to the first substring;
 @\"\\2\"@ to the second, etc; and @\"\\0\"@ to the entire match.
 @\"\\\\\\\\\"@ will insert a literal backslash.
 
 This does not advance if the regex matches an empty string.  This
-misfeature is here to match the behavior of the the original
-Text.Regex API.
+misfeature is here to match the behavior of the original
+@Text.Regex@ API.
 -}
 
 subRegex :: Regex                          -- ^ Search pattern
@@ -111,16 +111,16 @@ subRegex regexp inp repl =
             pre = take (off-i) str
             str' = drop (i'-i) str
             x = read xstr
-        in if null str' then \ m -> (pre++) . ((fst (m!x))++)
-             else \ m -> (pre++) . ((fst (m!x))++) . compile i' str' rest m
+        in if null str' then \ m -> (pre ++) . (fst (m ! x) ++)
+             else \ m -> (pre ++) . (fst (m ! x) ++) . compile i' str' rest m
       compiled :: MatchText String -> String -> String
       compiled = compile 0 repl findrefs where
         -- bre matches a backslash then capture either a backslash or some digits
         bre = mkRegex "\\\\(\\\\|[0-9]+)"
-        findrefs = map (\m -> (fst (m!1),snd (m!0))) (matchAllText bre repl)
+        findrefs = map (\m -> (fst (m ! 1), snd (m ! 0))) (matchAllText bre repl)
       go _i str [] = str
       go i str (m:ms) =
-        let (_,(off,len)) = m!0
+        let (_, (off, len)) = m ! 0
             i' = off+len
             pre = take (off-i) str
             str' = drop (i'-i) str
@@ -131,9 +131,9 @@ subRegex regexp inp repl =
 {- | Splits a string based on a regular expression.  The regular expression
 should identify one delimiter.
 
-This does not advance and produces an infinite list of [] if the regex
+This does not advance and produces an infinite list of @[]@ if the regex
 matches an empty string.  This misfeature is here to match the
-behavior of the the original Text.Regex API.
+behavior of the original @Text.Regex@ API.
 -}
 
 splitRegex :: Regex -> String -> [String]
