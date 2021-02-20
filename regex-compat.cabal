@@ -19,6 +19,9 @@ description:
   .
   See also <https://wiki.haskell.org/Regular_expressions> for more information.
 
+extra-source-files:
+  ChangeLog.md
+
 tested-with:
   -- Haskell CI:
   GHC == 7.0.4
