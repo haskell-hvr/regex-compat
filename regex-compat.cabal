@@ -1,6 +1,7 @@
 cabal-version:          1.12
 name:                   regex-compat
 version:                0.95.2.1
+x-revision:             1
 
 build-type:             Simple
 license:                BSD3
@@ -52,7 +53,7 @@ source-repository this
 library
   exposed-modules: Text.Regex
 
-  build-depends: base        >= 4.3 && < 4.16
+  build-depends: base        >= 4.3 && < 4.17
                , regex-base  == 0.94.*
                , regex-posix == 0.96.*
                , array       >= 0.3 && < 0.6
