@@ -1,5 +1,9 @@
 See also http://pvp.haskell.org/faq
 
+## 0.95.2.1 revision 2
+
+- Allow `base >= 4.17` (GHC 9.4)
+
 ## 0.95.2.1 revision 1
 
 - Allow `base-4.16` (GHC 9.2)
