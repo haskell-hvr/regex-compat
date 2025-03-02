@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -fno-warn-name-shadowing #-}
+{-# OPTIONS_GHC -Wno-name-shadowing #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Text.Regex
@@ -29,6 +29,14 @@ module Text.Regex (
     splitRegex
   ) where
 
+import Prelude
+  ( Bool
+  , Maybe
+  , String
+  , ($), (.), id, fst, snd, seq, read
+  , (+), (-)
+  , (++), drop, fmap, map, null, take
+  )
 import Data.Array((!))
 import Data.Bits((.|.))
 import Text.Regex.Base(RegexMaker(makeRegexOpts),defaultExecOpt,RegexLike(matchAll,matchAllText),RegexContext(matchM),MatchText)
